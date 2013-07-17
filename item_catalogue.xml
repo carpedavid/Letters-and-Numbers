@@ -1,0 +1,23 @@
+<items>
+	<item id="1">
+		<name>Spear</name>
+		<description>A sharp, pointy stick.</description>
+		<weight>10</weight>
+		<attack>1</attack>
+		<damage>2</damage>
+	</item>
+	<item id="2">
+		<name>Better Spear</name>
+		<description>A sharper, pointier stick.</description>
+		<weight>10</weight>
+		<attack>2</attack>
+		<damage>4</damage>
+	</item>
+	<item id="3">
+		<name>Best Spear</name>
+		<description>The sharpest, pointiest stick.</description>
+		<weight>10</weight>
+		<attack>3</attack>
+		<damage>6</damage>
+	</item>
+</items>

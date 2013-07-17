@@ -1,0 +1,6 @@
+<combat id="0">
+	<actors>
+		<actor id="0" quantity="1"/>
+		<actor id="1" quantity="2"/>
+	</actors>
+</combat>
