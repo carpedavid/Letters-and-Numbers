@@ -37,22 +37,22 @@ class story:
 		self.copyright_statement = ''
 		self.chapters = chapters()
 	
-	def load(self, file_name):
+	def load(self, file_id):
 		s = story_engine_data.story()
-		root = s.load(file_name)
+		root = s.load(file_id)
 
-		self.title = root.get('title')
-		self.author = root.get('author')
-		self.cover_image = root.get('cover_image')
+		self.title = root.get('title').strip()
+		self.author = root.get('author').strip()
+		self.cover_image = root.get('cover_image').strip()
 		
 		copyright_statement_root = root.find('copyright_statement')
-		self.copyright_statement = copyright_statement_root.text
+		self.copyright_statement = copyright_statement_root.text.strip()
 
 		chapters_root = root.find('chapters')
 		for child in chapters_root.findall('./chapter'):
 			c = chapter()
 			c.id = int(child.get('id'))
-			c.file_name = child.get('file_name')
+			c.file_id = child.get('file_id')
 			self.chapters[c.id] = c
 
 class chapter:
@@ -61,23 +61,24 @@ class chapter:
 	def __init__(self):
 		self.id = 0
 		self.title = ''
-		self.file_name = ''
+		self.file_id = ''
 		self.scenes = None
 				
-	def load(self, file_name):
+	def load(self, file_id):
 		'Loads the details for the current chapter.'
 		self.scenes = scenes()
 
 		c = story_engine_data.chapter()
-		root = c.load(file_name)
+		root = c.load(file_id)
 
-		self.title = root.get('title')
+		self.title = root.get('title').strip()
 
 		scenes_root = root.find('scenes')
-		for child in scenes_root:
-			s = scene
+		for child in scenes_root.findall('./scene'):
+			s = scene()
 			s.id = child.get('id')
-			s.file_name = child.get('file_name')
+			s.file_id = child.get('file_id')
+			self.scenes[s.id] = s
 
 	def unload(self):
 		'Unloads the details of the current chapter. Leaves only the basics needed for navigation.'
@@ -93,6 +94,7 @@ class chapters(collections.OrderedDict):
 		collections.OrderedDict.__init__(self)
 
 	def move_next(self):
+		self._max_item = len(self.keys())
 		self._current_item += 1
 		
 	def move_previous(self):
@@ -104,32 +106,35 @@ class chapters(collections.OrderedDict):
 	def reset(self):
 		pass
 		
-class scene(collections.OrderedDict):
-	'Represents a specific scene. Contains a collection of the actions.'
-	
-	intro = ''
-	intro_image = ''
-	actors = None
-	_current_action = 0
-	_max_action = 0
+class scene():
+	'Represents a specific scene.'
 	
 	def __init__(self):
-		collections.OrderedDict.__init__(self)
-		self.actors = actors.actors()
-		
-	def load_scene(self, file_name):
+		self.intro = ''
+		self.intro_image = ''
+		self.actors = None
+		self.actions = None
+
+	def load(self, file_id):
 		s = story_engine_data.scene()
-		root = s.load(file_name)
+		root = s.load(file_id)
 	
+		self.intro_image = root.get('intro_image').strip()
+		intro_root = root.find('intro')
+		self.intro = intro_root.text.strip()
 		self.load_actors(root)
 		self.load_actions(root)
 		
-		self._max_action = len(self.keys())
+	def unload(self):
+		self.actors = None
+		self.actions = None
 
 	def load_actors(self, root):
+		self.actors = actors.actors()
 		self.actors.load(root)
 
 	def load_actions(self, root):
+		self.actions = actions()
 		actions_node = root.find('actions')
 		
 		for child in actions_node.findall('./action'):
@@ -138,23 +143,17 @@ class scene(collections.OrderedDict):
 			a.type = child.get('type')
 			a.actor_id = int(child.get('actor'))
 			a.element = child
-			self[a.id] = a
-			
-		self._current_action = 0
+			self.actions[a.id] = a
 	
 	def play_scene(self):
-		return self[self.keys()[self._current_action]].render_action(self.actors)
+		return self.actions[0].render_action(self.actors)
 				
 	def move_next(self):
-		self._current_action += 1
-		if self._current_action >= self._max_action:
-			return (None, None)
-		else:
-			return self[self.keys()[self._current_action]].render_action(self.actors)
+		return self.actions.move_next(self.actors)
 		
 	def make_choice(self, action):
-		self._current_action = int(action)
-		return self[self._current_action].render_action(self.actors)
+		self._current_item = int(action)
+		return self[self._current_item].render_action(self.actors)
 
 class scenes(collections.OrderedDict):
 	'Contains the collection of scenes in a chapter.'
@@ -166,6 +165,7 @@ class scenes(collections.OrderedDict):
 		collections.OrderedDict.__init__(self)
 
 	def move_next(self):
+		self._max_item = len(self.keys())
 		self._current_item += 1
 		
 	def move_previous(self):
@@ -214,17 +214,35 @@ class actions(collections.OrderedDict):
 	def __init__(self):
 		collections.OrderedDict.__init__(self)
 
-	def move_next(self):
+	def move_next(self, actors):
+		self._max_item = len(self.keys())
 		self._current_item += 1
+
+		if self._current_item >= self._max_item:
+			return (None, None)
+		else:
+			return self[self.keys()[self._current_item]].render_action(actors)
 		
-	def move_previous(self):
-		pass
+	def move_previous(self, actors):
+		self._max_item = len(self.keys())
+		self._current_item -= 1
+
+		if self._current_item >= self._max_item:
+			return (None, None)
+		else:
+			return self[self.keys()[self._current_item]].render_action(actors)
 	
-	def go_to(self):
-		pass
+	def go_to(self, id, actors):
+		self._max_item = len(self.keys())
+		self._current_item = id
+	
+		if self._current_item >= self._max_item:
+			return (None, None)
+		else:
+			return self[self.keys()[self._current_item]].render_action(actors)
 		
-	def reset(self):
-		pass
+	def reset(self, actors):
+		_current_item = 0
 
 #Exercise the methods in this module
 if __name__ == '__main__':
@@ -258,20 +276,21 @@ if __name__ == '__main__':
 	print('Testing Chapters')
 	print('-------------------------------------------------------------------')
 	for k,v in s.chapters.items():
-		print v.id
-		print v.file_name
-
-	#scene
-	print('-------------------------------------------------------------------')
-	print('Testing Scene')
-	print('-------------------------------------------------------------------')
-	s = scene()
-	s.load_scene('scene_1.xml')
-	print(s.play_scene()[0])
-	print(s.move_next()[0])
-	print(s.move_next()[0])
-	print(s.move_next()[0])
-	print(s.move_next()[0])
+		v.load(v.file_id)
+		print v.title
+		print 'Loaded ' + str(len(v.scenes.keys())) + ' scenes.'
+		for q,r in v.scenes.items():
+			r.load(r.file_id)
+			print r.intro
+			print 'Loaded ' + str(len(r.actions.keys())) + ' actions.'
+			for y, z in r.actions.items():
+				print(z.id)
+			r.unload()
+			if r.actions == None:
+				print 'Unloaded actions'
+		v.unload()
+		if v.scenes == None:
+			print 'Unloaded scenes.'
 
 
 	

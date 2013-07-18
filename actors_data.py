@@ -15,41 +15,18 @@
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import actors_data
+#    This data access module contains rudimentary file support.
+#    All files must be in the same directory.
+#    Edit the following line to change the directory
 
-class actors(dict):
-	'Contains all of the actors in a scene or in combat.'
-		
-	def load(self, root):
-		actors_nodes = root.find('actors')
+data_directory = 'data'
 
-		for child in actors_nodes.iter('actor'):
-			a = actor()
-			a.import_actor(child.get('id'))
-			self[a.id] = a
-	
 class actor():
-	'Represents one of the actors.'
-	
-	def __init__(self):
-		self.id = 0
-		self.name = ''
-		self.description = ''
+	def load(self, id):
+		import xml.etree.ElementTree as ET
+		tree = ET.parse(data_directory + '/actors_catalogue.xml')
+		root = tree.getroot()
 		
-		#combat statistics
-		self.speed = 0
-		self.strength = 0
-		self.intelligence = 0
-	
-	def import_actor(self, id):
-		a = actors_data.actor()
+		actor_node = root.find("./actor[@id='" + str(id) + "']")
 
-		actor_node = a.load(id)
-		
-		self.id = int(id)
-		self.name = actor_node.find('name').text
-		self.description = actor_node.find('description').text
-		
-#Exercise the methods in this module
-if __name__ == '__main__':
-	pass
+		return actor_node

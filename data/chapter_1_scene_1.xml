@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<scene id="0">
+<scene id="0" intro_image="chapter_1_scene_1.jpg">
+	<intro>
+	This is the intro to Chapter 1, Scene 1
+	</intro>
 	<actors>
 		<actor id="0"/>
 		<actor id="1"/>

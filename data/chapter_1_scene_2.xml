@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scene id="0" intro_image="chapter_1_scene_.jpg">
+	<intro>
+		This is the intro to Chapter 1, Scene 2
+	</intro>
+	<actors>
+		<actor id="0"/>
+		<actor id="1"/>
+	</actors>
+	<actions>
+		<action type="line" id="0" actor="0">This is the first line.</action>
+		<action type="line" id="1" actor="1">This is the second line.</action>
+		<action type="choice" id="2" actor="0">
+			<action type="line" id="3" target="6">This is the third line.</action>
+			<action type="line" id="4" target="7">This is the fourth line.</action>
+			<action type="line" id="5" target="7">This is the fifth line.</action>
+		</action>
+		<action type="line" id="6" actor="1">This is the sixth line.</action>
+		<action type="line" id="7" actor="1">This is the seventh line.</action>
+	</actions>
+</scene>
