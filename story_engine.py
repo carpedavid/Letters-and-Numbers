@@ -25,6 +25,9 @@ class action_type:
 	
 	Line, Choice, Description = range(3) 
 
+class action_style:
+	'Enumerated list of styles'
+	Spoken, Thought, Action, Custom = range(4)
 
 #Classes
 class story:
@@ -230,7 +233,9 @@ class action():
 	def __init__(self):
 		self.id = 0
 		self.type = ''
+		self.style = 0
 		self.actor_id = 0
+		self.prerequisites = prerequisites()
 		
 	def render_action(self, a):
 		if self.type == 'line':
@@ -251,6 +256,23 @@ class action():
 			return_string += child.get('target') + ': ' + child.text + '\n'
 			
 		return return_string
+
+class choice():
+	'Represents a choice made by an actor.'
+	
+	def __init__(self):
+		self.id = 0
+		self.prompt = ''
+		self.style = 0
+		self.actor_id = 0
+		self.actions = actions()
+		
+	def load(self, root):
+		for child in root.findall('./action'):
+			pass
+
+class prerequisites():
+	pass
 
 #Exercise the methods in this module
 if __name__ == '__main__':
