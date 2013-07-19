@@ -35,6 +35,7 @@ class actor():
 		self.id = 0
 		self.name = ''
 		self.description = ''
+		self.image = ''
 		
 		#combat statistics
 		self.speed = 0
@@ -49,6 +50,9 @@ class actor():
 		self.id = int(id)
 		self.name = actor_node.find('name').text
 		self.description = actor_node.find('description').text
+		
+		if actor_node.find('image') != None:
+			self.image = actor_node.find('image').text
 		
 #Exercise the methods in this module
 if __name__ == '__main__':

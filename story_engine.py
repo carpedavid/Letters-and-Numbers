@@ -49,11 +49,36 @@ class story:
 		self.copyright_statement = copyright_statement_root.text.strip()
 
 		chapters_root = root.find('chapters')
-		for child in chapters_root.findall('./chapter'):
+		self.chapters.load(chapters_root)
+
+class chapters(collections.OrderedDict):
+	'Contains the collection of chapters in a story'
+
+	_current_item = 0
+	_max_item = 0
+
+	def __init__(self):
+		collections.OrderedDict.__init__(self)
+
+	def load(self, root):
+		for child in root.findall('./chapter'):
 			c = chapter()
 			c.id = int(child.get('id'))
 			c.file_id = child.get('file_id')
-			self.chapters[c.id] = c
+			self[c.id] = c
+
+	def move_next(self):
+		self._max_item = len(self.keys())
+		self._current_item += 1
+		
+	def move_previous(self):
+		self._current_item -= 1
+	
+	def go_to(self):
+		pass
+		
+	def reset(self):
+		pass
 
 class chapter:
 	'Represents an individual chapter in a story.'
@@ -74,38 +99,41 @@ class chapter:
 		self.title = root.get('title').strip()
 
 		scenes_root = root.find('scenes')
-		for child in scenes_root.findall('./scene'):
-			s = scene()
-			s.id = child.get('id')
-			s.file_id = child.get('file_id')
-			self.scenes[s.id] = s
+		self.scenes.load(scenes_root)
 
 	def unload(self):
 		'Unloads the details of the current chapter. Leaves only the basics needed for navigation.'
 		self.scenes = None
 
-class chapters(collections.OrderedDict):
-	'Contains the collection of chapters in a story'
-
+class scenes(collections.OrderedDict):
+	'Contains the collection of scenes in a chapter.'
+	
 	_current_item = 0
 	_max_item = 0
 
 	def __init__(self):
 		collections.OrderedDict.__init__(self)
 
+	def load(self, root):
+		for child in root.findall('./scene'):
+			s = scene()
+			s.id = child.get('id')
+			s.file_id = child.get('file_id')
+			self[s.id] = s
+
 	def move_next(self):
 		self._max_item = len(self.keys())
 		self._current_item += 1
 		
 	def move_previous(self):
-		self._current_item -= 1
+		pass
 	
 	def go_to(self):
 		pass
 		
 	def reset(self):
 		pass
-		
+	
 class scene():
 	'Represents a specific scene.'
 	
@@ -135,15 +163,8 @@ class scene():
 
 	def load_actions(self, root):
 		self.actions = actions()
-		actions_node = root.find('actions')
-		
-		for child in actions_node.findall('./action'):
-			a = action()
-			a.id = int(child.get('id'))
-			a.type = child.get('type')
-			a.actor_id = int(child.get('actor'))
-			a.element = child
-			self.actions[a.id] = a
+		actions_root = root.find('actions')
+		self.actions.load(actions_root)
 	
 	def play_scene(self):
 		return self.actions[0].render_action(self.actors)
@@ -155,56 +176,6 @@ class scene():
 		self._current_item = int(action)
 		return self[self._current_item].render_action(self.actors)
 
-class scenes(collections.OrderedDict):
-	'Contains the collection of scenes in a chapter.'
-	
-	_current_item = 0
-	_max_item = 0
-
-	def __init__(self):
-		collections.OrderedDict.__init__(self)
-
-	def move_next(self):
-		self._max_item = len(self.keys())
-		self._current_item += 1
-		
-	def move_previous(self):
-		pass
-	
-	def go_to(self):
-		pass
-		
-	def reset(self):
-		pass
-
-class action():
-	'Represents the actions of one actor during the scene.'
-	
-	def __init__(self):
-		self.id = 0
-		self.type = ''
-		self.actor_id = 0
-		
-	def render_action(self, a):
-		if self.type == 'line':
-			return (self.render_line(a), action_type.Line)
-		elif self.type == 'choice':
-			return (self.render_choice(a), action_type.Choice)
-
-	def render_line(self, a):
-		return_string = a.get(self.actor_id).name + ': '
-		return_string += self.element.text + '\n'
-		
-		return return_string
-		
-	def render_choice(self, a):
-		action_root = self.element
-		return_string = a.get(self.actor_id).name + '\n'
-		for child in action_root.findall('action'):
-			return_string += child.get('target') + ': ' + child.text + '\n'
-			
-		return return_string
-
 class actions(collections.OrderedDict):
 	'Contains the collection of actions in a scene.'
 	
@@ -213,6 +184,15 @@ class actions(collections.OrderedDict):
 
 	def __init__(self):
 		collections.OrderedDict.__init__(self)
+
+	def load(self, root):
+		for child in root.findall('./action'):
+			a = action()
+			a.id = int(child.get('id'))
+			a.type = child.get('type')
+			a.actor_id = int(child.get('actor'))
+			a.element = child
+			self[a.id] = a
 
 	def move_next(self, actors):
 		self._max_item = len(self.keys())
@@ -244,21 +224,36 @@ class actions(collections.OrderedDict):
 	def reset(self, actors):
 		_current_item = 0
 
+class action():
+	'Represents the actions of one actor during the scene.'
+	
+	def __init__(self):
+		self.id = 0
+		self.type = ''
+		self.actor_id = 0
+		
+	def render_action(self, a):
+		if self.type == 'line':
+			return (self.render_line(a), action_type.Line)
+		elif self.type == 'choice':
+			return (self.render_choice(a), action_type.Choice)
+
+	def render_line(self, a):
+		return_string = a.get(self.actor_id).name + ': '
+		return_string += self.element.text + '\n'
+		
+		return return_string
+		
+	def render_choice(self, a):
+		action_root = self.element
+		return_string = a.get(self.actor_id).name + '\n'
+		for child in action_root.findall('action'):
+			return_string += child.get('target') + ': ' + child.text + '\n'
+			
+		return return_string
+
 #Exercise the methods in this module
 if __name__ == '__main__':
-
-	#actors
-	#import xml.etree.ElementTree as ET
-	#scene_tree = ET.parse('scene_1.xml')
-	#scene_root = scene_tree.getroot()
-
-	#a = actors()
-	#a.load(scene_root)
-	
-	#print('List of actors:')
-	
-	#for i in a.keys():
-		#print(a[i].name + ' - ' + a[i].description)
 
 	#story
 	print('-------------------------------------------------------------------')
@@ -284,7 +279,7 @@ if __name__ == '__main__':
 			print r.intro
 			print 'Loaded ' + str(len(r.actions.keys())) + ' actions.'
 			for y, z in r.actions.items():
-				print(z.id)
+				print(r.actors[z.actor_id].name)
 			r.unload()
 			if r.actions == None:
 				print 'Unloaded actions'
