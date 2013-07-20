@@ -191,10 +191,7 @@ class actions(collections.OrderedDict):
 	def load(self, root):
 		for child in root.findall('./action'):
 			a = action()
-			a.id = int(child.get('id'))
-			a.type = child.get('type')
-			a.actor_id = int(child.get('actor'))
-			a.element = child
+			a.load(child)
 			self[a.id] = a
 
 	def move_next(self, actors):
@@ -236,7 +233,18 @@ class action():
 		self.style = 0
 		self.actor_id = 0
 		self.prerequisites = prerequisites()
-		
+		self.consequences = consequences()
+	
+	def load(self, root):
+		self.id = int(root.get('id'))
+		self.type = root.get('type')
+		self.actor_id = int(root.get('actor'))
+		self.element = root
+		p_root = root.find('prerequisites')
+		self.prerequisites.load(p_root)
+		c_root = root.find('consequences')
+		self.consequences.load(c_root)
+	
 	def render_action(self, a):
 		if self.type == 'line':
 			return (self.render_line(a), action_type.Line)
@@ -269,10 +277,66 @@ class choice():
 		
 	def load(self, root):
 		for child in root.findall('./action'):
-			pass
+			a = action()
+			a.id = int(child.get('id'))
+			a.type = child.get('type')
+			a.actor_id = int(child.get('actor'))
+			a.element = child
+			self[a.id] = a
+			
+class prerequisites(collections.OrderedDict):
+	'A collection of prerequisites.'
+	
+	def __init__(self):
+		collections.OrderedDict.__init__(self)
 
-class prerequisites():
-	pass
+	def load(self, root):
+		i = 0
+		if root != None:
+			for child in root.findall('./prerequisite'):
+				i += 1
+				p = prerequisite()
+				p.target = child.get('target')
+				p.value = child.get('value')
+				p.operator = child.get('operator')
+				self[i] = p
+
+class prerequisite():
+	'Condition for an action to be a viable choice.'
+	
+	def __init__(self):
+		self.target = None
+		self.value = None
+		self.operator = None
+	
+	def evaluate(self):
+		pass
+
+class consequences(collections.OrderedDict):
+	'A collection of consequences.'
+	def __init__(self):
+		collections.OrderedDict.__init__(self)
+
+	def load(self, root):
+		i = 0
+		if root != None:
+			for child in root.findall('./consequence'):
+				i += 1
+				c = consequence()
+				c.target = child.get('target')
+				c.value = child.get('value')
+				c.operator = child.get('operator')
+				self[i] = c
+			
+class consequence():
+	'Effect of choosing a specific action.'
+	def __init__(self):
+		self.target = None
+		self.value = None
+		self.operator = None
+		
+	def apply(self):
+		pass
 
 #Exercise the methods in this module
 if __name__ == '__main__':
