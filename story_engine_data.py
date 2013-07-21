@@ -27,7 +27,11 @@ class story():
 		tree = ET.parse(data_directory + '/' + file_name)
 		root = tree.getroot()
 		return root
-
+		
+	def save_state(self, s, uuid):
+		with open(uuid + '.pickle', 'wb') as f:
+			pickle.dump(s, f)
+			
 class chapter():
 	def load(self, file_name):
 		import xml.etree.ElementTree as ET

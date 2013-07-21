@@ -18,6 +18,8 @@
 import collections
 import actors
 import story_engine_data
+import uuid
+
 
 #Enumerations
 class action_type:
@@ -53,6 +55,12 @@ class story:
 
 		chapters_root = root.find('chapters')
 		self.chapters.load(chapters_root)
+
+	def save_state(self, u):
+		if u == None:
+			u = uuid.uuid4()
+
+		story_engine_data.story.save_state(u)
 
 class chapters(collections.OrderedDict):
 	'Contains the collection of chapters in a story'
@@ -372,6 +380,7 @@ if __name__ == '__main__':
 		v.unload()
 		if v.scenes == None:
 			print 'Unloaded scenes.'
+	s.save_state(None)
 
 
 	
