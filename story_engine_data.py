@@ -28,8 +28,8 @@ class story():
 		root = tree.getroot()
 		return root
 		
-	def save_state(self, s, uuid):
-		with open(uuid + '.pickle', 'wb') as f:
+	def save_state(self, s, u):
+		with open(u + '.pickle', 'wb') as f:
 			pickle.dump(s, f)
 			
 class chapter():

@@ -60,7 +60,7 @@ class story:
 		if u == None:
 			u = uuid.uuid4()
 
-		story_engine_data.story.save_state(u)
+		story_engine_data.story.save_state(self, u)
 
 class chapters(collections.OrderedDict):
 	'Contains the collection of chapters in a story'
