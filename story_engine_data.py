@@ -1,4 +1,4 @@
-#    Letters and Numbers Engine
+# Letters and Numbers Engine
 #    Copyright (C) 2013  David Garrett
 #
 #    This program is free software; you can redistribute it and/or modify
@@ -21,27 +21,33 @@
 
 data_directory = 'data'
 
+
 class story():
-	def load(self, file_name):
-		import xml.etree.ElementTree as ET
-		tree = ET.parse(data_directory + '/' + file_name)
-		root = tree.getroot()
-		return root
-		
-	def save_state(self, s, u):
-		with open(u + '.pickle', 'wb') as f:
-			pickle.dump(s, f)
-			
+    def load(self, file_name):
+        import xml.etree.ElementTree as ET
+
+        tree = ET.parse(data_directory + '/' + file_name)
+        root = tree.getroot()
+        return root
+
+    def save_state(self, s, u):
+        with open(u + '.pickle', 'wb') as f:
+            pickle.dump(s, f)
+
+
 class chapter():
-	def load(self, file_name):
-		import xml.etree.ElementTree as ET
-		tree = ET.parse(data_directory + '/' + file_name)
-		root = tree.getroot()
-		return root
+    def load(self, file_name):
+        import xml.etree.ElementTree as ET
+
+        tree = ET.parse(data_directory + '/' + file_name)
+        root = tree.getroot()
+        return root
+
 
 class scene():
-	def load(self, file_name):
-		import xml.etree.ElementTree as ET
-		tree = ET.parse(data_directory + '/' + file_name)
-		root = tree.getroot()
-		return root
+    def load(self, file_name):
+        import xml.etree.ElementTree as ET
+
+        tree = ET.parse(data_directory + '/' + file_name)
+        root = tree.getroot()
+        return root

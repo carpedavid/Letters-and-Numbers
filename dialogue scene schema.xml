@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scene id="0">
-	<actors>
-		<actor id="0"/>
-		<actor id="1"/>
-	</actors>
-	<action>
-		<item type="line" id="0" actor="0"></item>
-		<item type="line" id="1" actor="1"></item>
-		<item type="choice" id="2" actor="0">
-			<item type="line" id="3" action="6"></item>
-			<item type="line" id="4" action="7"></item>
-			<item type="line" id="5"></item>
-		</item>
-		<item type="line" id="6" actor="1"></item>
-		<item type="line" id="7" actor="1"></item>
-	</action>
+    <actors>
+        <actor id="0"/>
+        <actor id="1"/>
+    </actors>
+    <action>
+        <item type="line" id="0" actor="0"></item>
+        <item type="line" id="1" actor="1"></item>
+        <item type="choice" id="2" actor="0">
+            <item type="line" id="3" action="6"></item>
+            <item type="line" id="4" action="7"></item>
+            <item type="line" id="5"></item>
+        </item>
+        <item type="line" id="6" actor="1"></item>
+        <item type="line" id="7" actor="1"></item>
+    </action>
 </scene>

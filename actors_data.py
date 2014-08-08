@@ -1,4 +1,4 @@
-#    Letters and Numbers Engine
+# Letters and Numbers Engine
 #    Copyright (C) 2013  David Garrett
 #
 #    This program is free software; you can redistribute it and/or modify
@@ -21,12 +21,14 @@
 
 data_directory = 'data'
 
-class actor():
-	def load(self, id):
-		import xml.etree.ElementTree as ET
-		tree = ET.parse(data_directory + '/actors_catalogue.xml')
-		root = tree.getroot()
-		
-		actor_node = root.find("./actor[@id='" + str(id) + "']")
 
-		return actor_node
+class actor():
+    def load(self, id):
+        import xml.etree.ElementTree as ET
+
+        tree = ET.parse(data_directory + '/actors_catalogue.xml')
+        root = tree.getroot()
+
+        actor_node = root.find("./actor[@id='" + str(id) + "']")
+
+        return actor_node

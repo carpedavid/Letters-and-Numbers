@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actors>
-	<actor id="0">
-		<name>Troll</name>
-		<description>Tall, stupid monster.</description>
-		<statistics>
-			<speed>1</speed>
-			<strength>10</strength>
-			<intelligence>2</intelligence>
-		</statistics>
-		<items>
-			<item id="1" quantity="1"/>
-		</items>
-	</actor>
-	<actor id="1">
-		<name>Goblin</name>
-		<description>Short, stupid monster.</description>
-		<statistics>
-			<speed>1</speed>
-			<strength>10</strength>
-			<intelligence>2</intelligence>
-		</statistics>
-		<items>
-			<item id="1" quantity="1"/>
-		</items>
-	</actor>
-	<actor id="2">
-		<name>Dragon</name>
-		<description>Fearsome reptilian beast.</description>
-		<statistics>
-			<speed>1</speed>
-			<strength>10</strength>
-			<intelligence>2</intelligence>
-		</statistics>
-		<items>
-			<item id="1" quantity="1"/>
-		</items>
-	</actor>
+    <actor id="0">
+        <name>Troll</name>
+        <description>Tall, stupid monster.</description>
+        <statistics>
+            <speed>1</speed>
+            <strength>10</strength>
+            <intelligence>2</intelligence>
+        </statistics>
+        <items>
+            <item id="1" quantity="1"/>
+        </items>
+    </actor>
+    <actor id="1">
+        <name>Goblin</name>
+        <description>Short, stupid monster.</description>
+        <statistics>
+            <speed>1</speed>
+            <strength>10</strength>
+            <intelligence>2</intelligence>
+        </statistics>
+        <items>
+            <item id="1" quantity="1"/>
+        </items>
+    </actor>
+    <actor id="2">
+        <name>Dragon</name>
+        <description>Fearsome reptilian beast.</description>
+        <statistics>
+            <speed>1</speed>
+            <strength>10</strength>
+            <intelligence>2</intelligence>
+        </statistics>
+        <items>
+            <item id="1" quantity="1"/>
+        </items>
+    </actor>
 </actors>

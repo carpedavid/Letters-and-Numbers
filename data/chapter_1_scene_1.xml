@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scene id="0" intro_image="chapter_1_scene_1.jpg">
-	<intro>
-	This is the intro to Chapter 1, Scene 1
-	</intro>
-	<actors>
-		<actor id="0"/>
-	</actors>
-	<actions>
-		<action type="line" id="0" actor="0">This is the first line.</action>
-		<action type="line" id="1" actor="0">This is the second line.</action>
-		<action type="line" id="2" actor="0">This is the third line.</action>
-		
-	</actions>
+    <intro>
+        This is the intro to Chapter 1, Scene 1
+    </intro>
+    <actors>
+        <actor id="0"/>
+    </actors>
+    <actions>
+        <action type="line" id="0" actor="0">This is the first line.</action>
+        <action type="line" id="1" actor="0">This is the second line.</action>
+        <action type="line" id="2" actor="0">This is the third line.</action>
+
+    </actions>
 </scene>

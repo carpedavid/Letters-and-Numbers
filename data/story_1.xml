@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <story title="Story Number 1" author="David Garrett" cover_image="cover_image_1.jpg">
-	<copyright_statement>
-		This story is copyright © 2013 by David Garrett.
-	</copyright_statement>
-	<chapters>
-		<chapter id="1" file_id="chapter_1.xml"/>
-		<chapter id="2" file_id="chapter_2.xml"/>
-	</chapters>
+    <copyright_statement>
+        This story is copyright © 2013 by David Garrett.
+    </copyright_statement>
+    <chapters>
+        <chapter id="1" file_id="chapter_1.xml"/>
+        <chapter id="2" file_id="chapter_2.xml"/>
+    </chapters>
 </story>

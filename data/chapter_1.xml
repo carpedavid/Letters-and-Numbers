@@ -1,6 +1,6 @@
 <chapter id="1" title="This is Chapter One">
-	<scenes>
-		<scene id="1" file_id="chapter_1_scene_1.xml"/>
-		<scene id="2" file_id="chapter_1_scene_2.xml"/>
-	</scenes>
+    <scenes>
+        <scene id="1" file_id="chapter_1_scene_1.xml"/>
+        <scene id="2" file_id="chapter_1_scene_2.xml"/>
+    </scenes>
 </chapter>
