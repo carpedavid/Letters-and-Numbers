@@ -3,14 +3,17 @@ import collections
 import actors
 
 
-class action_type:
-    'Enumerated list of action types'
+class ActionType:
+    """Enumerated list of action types"""
+
+    def __init__(self):
+        pass
 
     Line, Choice, Description = range(3)
 
 
-class scene(collections.OrderedDict):
-    'Represents a specific scene. Contains a collection of the actions.'
+class Scene(collections.OrderedDict):
+    """Represents a specific scene. Contains a collection of the actions."""
 
     # properties
     intro = None
@@ -29,9 +32,9 @@ class scene(collections.OrderedDict):
         self._max_action = 0
 
     def load_scene(self, file_name):
-        import xml.etree.ElementTree as ET
+        import xml.etree.ElementTree as Et
 
-        scene_tree = ET.parse(file_name)
+        scene_tree = Et.parse(file_name)
         scene_root = scene_tree.getroot()
 
         self.load_actors(scene_root)
@@ -61,7 +64,7 @@ class scene(collections.OrderedDict):
     def move_next(self):
         self._current_action += 1
         if self._current_action >= self._max_action:
-            return (None, None)
+            return None, None
         else:
             return self[self.keys()[self._current_action]].render_action(self.actors)
 
@@ -80,9 +83,9 @@ class action():
 
     def render_action(self, a):
         if self.type == 'line':
-            return (self.render_line(a), action_type.Line)
+            return (self.render_line(a), ActionType.Line)
         elif self.type == 'choice':
-            return (self.render_choice(a), action_type.Choice)
+            return (self.render_choice(a), ActionType.Choice)
 
     def render_line(self, a):
         return_string = a.get(self.actor_id).name + ': '
@@ -100,7 +103,7 @@ class action():
 
 # Exercise the methods in this module
 if __name__ == '__main__':
-    s = scene()
+    s = Scene()
     s.load_scene('scene_1.xml')
     print(s.play_scene()[0])
     print(s.move_next()[0])

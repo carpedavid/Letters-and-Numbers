@@ -22,13 +22,16 @@
 data_directory = 'data'
 
 
-class actor():
-    def load(self, id):
-        import xml.etree.ElementTree as ET
+class Actor():
+    def __init__(self):
+        pass
 
-        tree = ET.parse(data_directory + '/actors_catalogue.xml')
+    def load(self, actor_id):
+        import xml.etree.ElementTree as Et
+
+        tree = Et.parse(data_directory + '/actors_catalogue.xml')
         root = tree.getroot()
 
-        actor_node = root.find("./actor[@id='" + str(id) + "']")
+        actor_node = root.find("./actor[@id='" + str(actor_id) + "']")
 
         return actor_node

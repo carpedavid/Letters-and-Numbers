@@ -45,7 +45,7 @@ class Actor():
         self.intelligence = 0
 
     def import_actor(self, actor_id):
-        a = actors_data.actor()
+        a = actors_data.Actor()
 
         actor_node = a.load(actor_id)
 

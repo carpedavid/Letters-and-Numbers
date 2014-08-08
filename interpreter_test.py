@@ -17,7 +17,7 @@ class testEngine(cmd.Cmd):
     intro = 'Welcome to the test. Type help or ? to list commands.\n'
     prompt = 'Enter a command -> '
     doc_header = 'GAME: Main Menu'
-    current_scene = dialogue_engine.scene()
+    current_scene = dialogue_engine.Scene()
     current_inventory = inventory_engine.inventory()
     current_context = 0
 
@@ -64,11 +64,11 @@ class testEngine(cmd.Cmd):
         pass
 
     def render_action(self, output, output_type):
-        if output_type == dialogue_engine.action_type.Line:
+        if output_type == dialogue_engine.ActionType.Line:
             print(output)
             self.current_context = engine_context.Default
             self.prompt = 'Enter a command -> '
-        elif output_type == dialogue_engine.action_type.Choice:
+        elif output_type == dialogue_engine.ActionType.Choice:
             print(output)
             self.current_context = engine_context.DialogueChoice
             self.prompt = 'Choose -> '
