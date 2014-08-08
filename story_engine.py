@@ -177,7 +177,7 @@ class scene():
         self.actions = None
 
     def load_actors(self, root):
-        self.actors = actors.actors()
+        self.actors = actors.Actors()
         self.actors.load(root)
 
     def load_actions(self, root):

@@ -18,20 +18,20 @@
 import actors_data
 
 
-class actors(dict):
-    'Contains all of the actors in a scene or in combat.'
+class Actors(dict):
+    """Contains all of the actors in a scene or in combat."""
 
     def load(self, root):
         actors_nodes = root.find('actors')
 
         for child in actors_nodes.iter('actor'):
-            a = actor()
+            a = Actor()
             a.import_actor(child.get('id'))
             self[a.id] = a
 
 
-class actor():
-    'Represents one of the actors.'
+class Actor():
+    """Represents one of the actors."""
 
     def __init__(self):
         self.id = 0
@@ -44,16 +44,16 @@ class actor():
         self.strength = 0
         self.intelligence = 0
 
-    def import_actor(self, id):
+    def import_actor(self, actor_id):
         a = actors_data.actor()
 
-        actor_node = a.load(id)
+        actor_node = a.load(actor_id)
 
-        self.id = int(id)
+        self.id = int(actor_id)
         self.name = actor_node.find('name').text
         self.description = actor_node.find('description').text
 
-        if actor_node.find('image') != None:
+        if actor_node.find('image') is not None:
             self.image = actor_node.find('image').text
 
 #Exercise the methods in this module

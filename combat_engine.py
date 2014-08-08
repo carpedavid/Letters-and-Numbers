@@ -5,7 +5,7 @@ class combat():
     'Represents an instance of combat between two or more actors.'
 
     def __init__(self):
-        self.actors = actors.actors()
+        self.actors = actors.Actors()
 
     def load_combat(self, file_name):
         import xml.etree.ElementTree as ET

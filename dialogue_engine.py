@@ -22,7 +22,7 @@ class scene(collections.OrderedDict):
     #methods
     def __init__(self):
         collections.OrderedDict.__init__(self)
-        self.actors = actors.actors()
+        self.actors = actors.Actors()
         self.intro = ''
         self.intro_image = ''
         self._current_action = 0
