@@ -104,7 +104,7 @@ class action():
 # Exercise the methods in this module
 if __name__ == '__main__':
     s = Scene()
-    s.load_scene('scene_1.xml')
+    s.load_scene('chapter_1.xml')
     print(s.play_scene()[0])
     print(s.move_next()[0])
     print(s.move_next()[0])
